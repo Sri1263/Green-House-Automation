@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Temperature.css'
+import './Main.css'
 import Chart from 'chart.js/auto'
 import { Pie } from "react-chartjs-2";
 import { CategoryScale } from "chart.js";
@@ -12,14 +12,9 @@ const AQ = () => {
     const [AQStatus,setAQStatus] = useState('')
     const [data,setData] = useState(
         {
-            label: '',
+            label: ' ',
             data: [],
-            //   you can set indiviual colors for each bar
-            //   backgroundColor: [
-            //     'rgba(255, 255, 255, 0.6)',
-            //     'rgba(255, 255, 255, 0.6)',
-            //     'rgba(255, 255, 255, 0.6)'
-            //   ],
+            backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF"],
             borderWidth: 2,
         }
     )

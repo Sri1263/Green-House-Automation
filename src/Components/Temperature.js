@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Temperature.css'
+import './Main.css'
 import Chart from 'chart.js/auto'
 import { Line } from "react-chartjs-2";
 import { CategoryScale } from "chart.js";
@@ -8,15 +8,24 @@ Chart.register(CategoryScale)
 
 const Temperature = () => {
 
+    const [xValues,setXValues] = useState([])
     const [temp,setTemp] = useState('')
     const [system,setSystem] = useState('')
     const [data,setData] = useState(
-        {
-            label: '',
-            data: [],
-            borderWidth: 2,
-            hidden: false,
-        }
+        [
+            {
+                label: ' Temperature',
+                data: [],
+                borderWidth: 2,
+                hidden: false,
+            },
+            {
+                label: ' Humidity',
+                data: [],
+                borderWidth: 2,
+                hidden: false,
+            }
+        ]
     )
 
     useEffect(() => {
@@ -26,8 +35,8 @@ const Temperature = () => {
             res = await res.json()
             setTemp(res.temperature)            
             setSystem(res.system_on)
-            setData({...data,data:res.points})
-
+            setData([{...data[0],data:res.y1},{...data[1],data:res.y2}])
+            setXValues(res.x)
         }
         fetchData()
     }, []);
@@ -42,8 +51,8 @@ const Temperature = () => {
             <div className='graphHolder'>
             <Line
                     data={{
-                            labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
-                            datasets: [ data ],
+                            labels: xValues,
+                            datasets: data,
                         }}
                     options={{
                             plugins: {
