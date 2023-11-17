@@ -1,0 +1,16 @@
+.container{
+    display: flex 1;
+    flex-direction: column;
+    height: 100vh;
+    justify-items: space-evenly;
+    align-items: center;
+}
+
+.homeCard{
+    width: 70%;
+    height: 20%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    border-radius: 20px;
+    border: black solid 2px;
+    margin: 3%;
+}

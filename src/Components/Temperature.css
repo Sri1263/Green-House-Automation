@@ -1,0 +1,25 @@
+.pageContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+}
+
+.systemIndicator{
+    width: 90%;
+    height: 7vh;
+    padding: 2%;
+    border: 3px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.graphHolder{
+    /* height: 65vh; */
+    width: 70%; 
+    padding: 1%;
+    border: 3px solid black;
+}
