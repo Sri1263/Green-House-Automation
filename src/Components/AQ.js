@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Temperature.css'
 import Chart from 'chart.js/auto'
 import { Pie } from "react-chartjs-2";
@@ -8,26 +8,34 @@ Chart.register(CategoryScale)
 
 const AQ = () => {
 
-    const [AQI,setAQI] = useState('249')
-    const [AQStatus,setAQStatus] = useState('GOOD')
+    const [AQI,setAQI] = useState()
+    const [AQStatus,setAQStatus] = useState('')
     const [data,setData] = useState(
         {
-            labels: ['LPG', 'Isobutane', 'Propane', 'Alcohol', 'Smoke'],
-            datasets: [
-                {
-                label: '',
-                data: [16.3, 29.2, 28.0, 41.4, 40.7],
-                //   you can set indiviual colors for each bar
-                //   backgroundColor: [
-                //     'rgba(255, 255, 255, 0.6)',
-                //     'rgba(255, 255, 255, 0.6)',
-                //     'rgba(255, 255, 255, 0.6)'
-                //   ],
-                borderWidth: 2,
-                }
-            ]
+            label: '',
+            data: [],
+            //   you can set indiviual colors for each bar
+            //   backgroundColor: [
+            //     'rgba(255, 255, 255, 0.6)',
+            //     'rgba(255, 255, 255, 0.6)',
+            //     'rgba(255, 255, 255, 0.6)'
+            //   ],
+            borderWidth: 2,
         }
     )
+
+    useEffect(() => {
+        const fetchData = async () => {
+
+            let res = await fetch( 'http://gha2023.pythonanywhere.com/aq-data' , { method: 'GET' } )
+            res = await res.json()
+            setAQI(res.AQI)
+            setAQStatus(res.AQStatus)
+            setData({...data,data:res.points})
+
+        }
+        fetchData()
+    }, []);
 
     return (
         <div className='pageContainer'>
@@ -36,9 +44,12 @@ const AQ = () => {
                     <h2>Air Quality Status : {AQStatus}</h2>
             </div>
             
-            <div className='graphHolder'>
+            <div className='pieChartHolder'>
                 <Pie
-                    data={data}
+                    data={{
+                        labels: ['LPG', 'Isobutane', 'Propane', 'Alcohol', 'Smoke'],
+                        datasets: [ data ]
+                    }}
                     options={{
                         plugins: {
                             title: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Temperature.css'
 import Chart from 'chart.js/auto'
 import { Line } from "react-chartjs-2";
@@ -6,27 +6,36 @@ import { CategoryScale } from "chart.js";
 
 Chart.register(CategoryScale)
 
-const Temperature = async () => {
+const Temperature = () => {
 
-    const [temp,setTemp] = useState('22 *C')
-    const [system,setSystem] = useState('current system on  ')
+    const [temp,setTemp] = useState('')
+    const [system,setSystem] = useState('')
     const [data,setData] = useState(
         {
             label: '',
-            data: [17.7, 21.8, 17.7, 20.5, 21.9, 21.6, 19.3, 22.1, 20.0, 21.4, 18.3, 21.6, 17.7, 21.4, 21.4, 18.4, 19.7, 19.4, 18.1, 18.7, 22.8, 20.0, 22.9, 17.4, 21.3, 17.3, 22.0, 19.6],
+            data: [],
             borderWidth: 2,
             hidden: false,
         }
     )
 
-    let res = await fetch( 'http://gha2023.pythonanywhere.com/temp' , { method: 'GET' } )
-    res = await res.json()
-    // setData({...data,data:})
+    useEffect(() => {
+        const fetchData = async () => {
+            
+            let res = await fetch( 'http://gha2023.pythonanywhere.com/temp-data' , { method: 'GET' } )
+            res = await res.json()
+            setTemp(res.temperature)            
+            setSystem(res.system_on)
+            setData({...data,data:res.points})
+
+        }
+        fetchData()
+    }, []);
 
     return (
         <div className='pageContainer'>
             <div className='systemIndicator'>
-                    <h2>Current Temperature : {temp}</h2>
+                    <h2>Current Temperature : {temp} *C</h2>
                     <h2>Temperature System Status : {system}</h2>
             </div>
             
